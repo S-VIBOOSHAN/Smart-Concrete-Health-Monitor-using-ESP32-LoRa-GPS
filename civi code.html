@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smart Concrete Health Monitor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background:#f4f4f4;
+            text-align:center;
+            margin:20px;
+        }
+
+        h1{
+            color:#0066cc;
+        }
+
+        .card{
+            background:white;
+            padding:20px;
+            margin:15px;
+            border-radius:10px;
+            box-shadow:0px 2px 8px rgba(0,0,0,0.2);
+            display:inline-block;
+            width:250px;
+        }
+
+        .value{
+            font-size:30px;
+            color:#009933;
+            font-weight:bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<h1>Smart Concrete Health Monitor</h1>
+
+<div class="card">
+    <h3>Temperature</h3>
+    <div class="value" id="temp">--</div>
+</div>
+
+<div class="card">
+    <h3>Humidity</h3>
+    <div class="value" id="hum">--</div>
+</div>
+
+<div class="card">
+    <h3>Strain</h3>
+    <div class="value" id="strain">--</div>
+</div>
+
+<div class="card">
+    <h3>Vibration</h3>
+    <div class="value" id="vib">--</div>
+</div>
+
+<div class="card">
+    <h3>Health Score</h3>
+    <div class="value" id="health">--</div>
+</div>
+
+<script>
+
+const channelID = "YOUR_CHANNEL_ID";
+const readAPI = "YOUR_READ_API_KEY";
+
+function getData()
+{
+fetch(`https://api.thingspeak.com/channels/${channelID}/feeds/last.json?api_key=${readAPI}`)
+
+.then(response => response.json())
+
+.then(data => {
+
+document.getElementById("temp").innerHTML =
+data.field1 + " °C";
+
+document.getElementById("hum").innerHTML =
+data.field2 + " %";
+
+document.getElementById("strain").innerHTML =
+data.field3;
+
+document.getElementById("vib").innerHTML =
+data.field4;
+
+document.getElementById("health").innerHTML =
+data.field5 + "%";
+
+});
+}
+
+getData();
+
+setInterval(getData,15000);
+
+</script>
+
+</body>
+</html>
